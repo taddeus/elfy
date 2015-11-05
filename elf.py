@@ -29,6 +29,17 @@ class Encodable(object):
         args = [getattr(self, field) for (_, field) in self.fields]
         return struct.pack(self.fmt(bits), *args)
 
+    def dump(self):
+        print '%s:' % self.__class__.__name__
+
+        for s, field in self.fields:
+            print '%-15s:' % field,
+
+            if s[0].endswith('s'):
+                print getattr(self, field)
+            else:
+                print '0x%x' % getattr(self, field)
+
 
 class UnorderedEncodable(Encodable):
     @classmethod
